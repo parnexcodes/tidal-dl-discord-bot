@@ -56,3 +56,7 @@ Your token is saved so you don't have to do it everytime.
 [Streamrip](https://github.com/nathom/streamrip) by nathom
 
 [Discord.py Bot Template](https://github.com/kkrypt0nn/Python-Discord-Bot-Template) by kkrypt0nn
+
+
+## Discord
+<https://discord.gg/z6prF5C>
