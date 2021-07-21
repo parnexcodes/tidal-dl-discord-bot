@@ -20,11 +20,13 @@
 
 ```pip3 install streamrip --upgrade```
 
+```pip install -U discord.py```
+
 ```rclone```
 
 ```7zip```
 
-```pip install -u requirements.txt```
+```pip install -r requirements.txt```
 
 Keep rclone and 7zip in the bot folder if you are using Windows.
 
