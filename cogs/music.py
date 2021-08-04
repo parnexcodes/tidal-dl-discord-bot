@@ -43,7 +43,7 @@ class Music(commands.Cog, name="music"):
         req_channel = self.bot.get_channel(request_channel)
         up_channel = self.bot.get_channel(upload_channel)
 
-        rclone_drives = ["drive", "drive1", "drive2"] # Change it to your rclone remote
+        rclone_drives = ["drive", "drive1", "drive2"]
         random_rclone_drives = random.choice(rclone_drives)
 
         if ctx.channel.id == request_channel:                    
@@ -68,15 +68,13 @@ class Music(commands.Cog, name="music"):
                 download_start_time = time.time()
                 try:
                     with open('rip_log.txt', 'wb') as f:
-                        process = subprocess.Popen(["rip", "--no-db", '-u', f'{link}'], stdout=subprocess.PIPE)
+                        process = subprocess.Popen(["rip", 'url', f'{link}', '-i'], stdout=subprocess.PIPE)
                         for line in iter(process.stdout.readline, b''):
                             sys.stdout.buffer.write(line)
                             f.write(line)
 
                     download_end_time = time.time() - download_start_time                        
                     download_time = timedelta(seconds=round(download_end_time))
-
-                    upload_start_time = time.time()
 
                     search_path = f'{download_folder}download/Temp'
                     root, dirs, files = next(os.walk(search_path), ([],[],[]))
@@ -97,6 +95,8 @@ class Music(commands.Cog, name="music"):
 
                     zipping_end_time = time.time() - zipping_start_time        
                     zipping_time = timedelta(seconds=round(zipping_end_time))
+
+                    upload_start_time = time.time()
 
                     with open('upload_log.txt', 'wb') as f:
                         process = subprocess.Popen(["rclone", "copy", f'{download_folder}download/Temp/{zip_file}', f"{random_rclone_drives}:", "--progress", "--transfers", "16", "--drive-chunk-size", "32M"], stdout=subprocess.PIPE)
