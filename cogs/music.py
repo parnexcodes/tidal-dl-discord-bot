@@ -35,7 +35,7 @@ class Music(commands.Cog, name="music"):
     # @commands.max_concurrency(1, per=BucketType.guild, wait=False)
     # @commands.cooldown(1, 300.0, commands.BucketType.guild)
     # @commands.has_any_role("Admin", "Super Moderator", "Mod", "Uploader", "Server Booster", "VIP", "beta tester")  
-    async def dl(self, ctx, *, link):
+    async def dl(self, ctx, link):
         """
         Downloads music.
         """
@@ -107,12 +107,7 @@ class Music(commands.Cog, name="music"):
                     upload_end_time = time.time() - upload_start_time                            
                     upload_time = timedelta(seconds=round(upload_end_time))
 
-                    try:
-                        subprocess.run(["rm", "-rf", f'{download_folder}download/Temp/{folder_name}'])
-                        subprocess.run(["rm", "-rf", f'{download_folder}download/Temp/{zip_file}'])
-                    except:
-                        subprocess.run(["rm", "-rf", f'{download_folder}download/Temp/{file_name}'])
-                        subprocess.run(["rm", "-rf", f'{download_folder}download/Temp/{zip_file}'])                       
+                    subprocess.run(["rm", "-rf", f'{download_folder}download/Temp'])              
 
                     all_done = discord.Embed(
                         name="**Music DL**",
