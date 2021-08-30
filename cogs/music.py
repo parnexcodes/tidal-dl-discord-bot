@@ -52,15 +52,21 @@ class Music(commands.Cog, name="music"):
             elif link.find("playlist") != -1:
                 await ctx.send(f"Downloading **Artist Profile** and **Playlists** not allowed.\n{ctx.author.mention}")
             elif link.find("qobuz") != -1:
-                await ctx.send(f"**Qobuz** Module can't be run atm.\n{ctx.author.mention}")
+                await ctx.send(f"**Qobuz** can't be downloaded.\n{ctx.author.mention}")
             elif link.find("youtube") != -1:
-                await ctx.send(f"**YouTube** Module can't be run atm.\n{ctx.author.mention}")
+                await ctx.send(f"**YouTube Music** can't be downloaded.\n{ctx.author.mention}")
             elif link.find("youtu.be") != -1:
-                await ctx.send(f"**YouTube** Module can't be run atm.\n{ctx.author.mention}")
+                await ctx.send(f"**YouTube Music** can't be downloaded.\n{ctx.author.mention}")
             elif link.find("soundcloud") != -1:
-                await ctx.send(f"**Soundcloud** Module can't be run atm.\n{ctx.author.mention}")
+                await ctx.send(f"**Soundcloud** can't be downloaded.\n{ctx.author.mention}")
+            elif link.find("spotify") != -1:
+                await ctx.send(f"**Spotify** can't be downloaded.\n{ctx.author.mention}")
+            elif link.find("deezer") != -1:
+                await ctx.send(f"**Deezer** can't be downloaded.\n{ctx.author.mention}")                               
             elif not link.find(".com") != -1:
-                await ctx.send(f"**Invalid** Link.\n{ctx.author.mention}")                        
+                await ctx.send(f"**Invalid** Link.\n{ctx.author.mention}")  
+            elif not link.find("https") != -1:
+                await ctx.send(f"Add https:// to your link.\n{ctx.author.mention}")                                      
             else:
                 await req_channel.set_permissions(ctx.guild.default_role, send_messages=False)                
                 await ctx.send(f"{ctx.author.mention} Please wait while your request is being downloaded <#{upload_channel}>\nChannel will be unlocked after completing the request.")            
