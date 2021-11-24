@@ -4,7 +4,7 @@ import platform
 import random
 import sys
 import subprocess
-
+import asyncio
 import aiohttp
 import discord
 from discord.ext import commands
@@ -24,7 +24,7 @@ else:
 download_folder = config['bot_folder']
 request_channel = config['request_channel']
 upload_channel = config['upload_channel']
-
+status = False
 # Here we name the cog and create a new class for the cog.
 class Music(commands.Cog, name="music"):
     def __init__(self, bot):
@@ -42,7 +42,7 @@ class Music(commands.Cog, name="music"):
 
         req_channel = self.bot.get_channel(request_channel)
         up_channel = self.bot.get_channel(upload_channel)
-
+        global status
         rclone_drives = ["drive", "drive1", "drive2"]
         random_rclone_drives = random.choice(rclone_drives)
 
@@ -68,9 +68,13 @@ class Music(commands.Cog, name="music"):
             elif not link.find("https") != -1:
                 await ctx.send(f"Add https:// to your link.\n{ctx.author.mention}")                                      
             else:
-                await req_channel.set_permissions(ctx.guild.default_role, send_messages=False)                
-                await ctx.send(f"{ctx.author.mention} Please wait while your request is being downloaded <#{upload_channel}>\nChannel will be unlocked after completing the request.")            
-
+                #await req_channel.set_permissions(ctx.guild.default_role, send_messages=False)                
+                await ctx.send(f"{ctx.author.mention} Please wait while your request is being downloaded in <#{upload_channel}>\nYou'll be ping once posted.")            
+            while True:
+                if status == True:
+                    await asyncio.sleep(3)
+                else: break
+                status = True
                 download_start_time = time.time()
                 try:
                     with open('rip_log.txt', 'wb') as f:
@@ -136,12 +140,11 @@ class Music(commands.Cog, name="music"):
 
                     all_done.set_footer(text=f"Requested by {ctx.message.author}\nBot Developed by parnex#2368") 
 
-                    await up_channel.send(embed=all_done)
-                    await up_channel.send(f"{ctx.author.mention}")
-                    await req_channel.set_permissions(ctx.guild.default_role, send_messages=True)
+                    await up_channel.send(f"{ctx.author.mention}",embed=all_done)
+                    status = False
                 except:
                     await ctx.send("The following Song/Album isn't available to download because of Geo Restriction or Internal Error from Streaming Platform.")
-                    await req_channel.set_permissions(ctx.guild.default_role, send_messages=True)
+                    status = False
 
         else:
             await ctx.send(f"This command can only be used in <#{request_channel}>")                                         
