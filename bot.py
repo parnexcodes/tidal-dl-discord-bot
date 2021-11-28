@@ -132,7 +132,7 @@ async def on_command_error(context, error):
             color=0xE02B2B
         )
         embed.set_footer(text=f"Requested by {context.message.author}.")
-        await context.send(embed=embed)                
+        await context.send(embed=embed)              
     raise error
 
 

@@ -4,7 +4,6 @@
   "application_id": "discord application id",
   "bot_folder": "/home/ubuntu/Music DL Bot/",
   "request_channel": 123456,
-  "upload_channel": 123456,
   "owners": [
     123456,
     123456
