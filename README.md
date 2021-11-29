@@ -5,7 +5,7 @@
  Edit the commands in [music.py](https://github.com/parnexcodes/tidal-dl-discord-bot/blob/main/cogs/music.py) if you're using another operating system.
  
  ## Note
- Make 2 channels , one for Requests and another for Uploads.
+ Make a channel for requests channel.
  
  The bot performs tasks **synchronously** (one task at a time) , so the channel needs to be locked after each request.
  
@@ -18,9 +18,7 @@
 
 ```pip```
 
-```pip3 install streamrip --upgrade```
-
-```pip install -U discord.py```
+```pip3 install git+https://github.com/uwulily/streamrip.git```
 
 ```rclone```
 
@@ -37,15 +35,11 @@ Run ```rip config --open``` , it will show you the file location of streamrip's 
 Set ```[database]
 enabled = true``` to **false**.
 
-Change rclone remote to your's [change this line](https://github.com/parnexcodes/tidal-dl-discord-bot/blob/f3abf3a9c05455b88df999a7653ac26c7fbccbe0/cogs/music.py#L46).
-
-Read <https://rclone.org/commands/rclone_config/> to setup rclone.
-
 Open the config.json file and edit it.
 
 [This line](https://github.com/parnexcodes/tidal-dl-discord-bot/blob/f3abf3a9c05455b88df999a7653ac26c7fbccbe0/config.json#L5) Should have a ```/``` at the end.
 
-Put the channel id in [line](https://github.com/parnexcodes/tidal-dl-discord-bot/blob/f3abf3a9c05455b88df999a7653ac26c7fbccbe0/config.json#L6) 6 and 7.
+Put the channel id in [line](https://github.com/parnexcodes/tidal-dl-discord-bot/blob/f3abf3a9c05455b88df999a7653ac26c7fbccbe0/config.json#L6) 6.
 
 ## Run Bot
 ```python3 bot.py```
