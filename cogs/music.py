@@ -25,7 +25,7 @@ else:
 download_folder = config['bot_folder']
 request_channel = config['request_channel']
 
-status = False
+# status = False
 
 # Here we name the cog and create a new class for the cog.
 class Music(commands.Cog, name="music"):
@@ -43,17 +43,17 @@ class Music(commands.Cog, name="music"):
         """
 
         req_channel = self.bot.get_channel(request_channel)
-        global status
+        # global status
 
         rclone_drives = ["tidal"]
         random_rclone_drives = random.choice(rclone_drives)
 
         if ctx.channel.id == request_channel:                    
-            if link.find("artist") and link.find("tidal") != -1:
+            if link.find("artist") != -1 and link.find("tidal") != -1:
                 await ctx.send(f"Downloading **Artist Profile** and **Playlists** not allowed.\n{ctx.author.mention}")
-            elif link.find("playlist") and link.find("tidal") != -1:
+            elif link.find("playlist") != -1 and link.find("tidal") != -1:
                 await ctx.send(f"Downloading **Artist Profile** and **Playlists** not allowed.\n{ctx.author.mention}")
-            if link.find("interpreter") and link.find("qobuz") != -1:
+            if link.find("interpreter") != -1 and link.find("qobuz") != -1:
                 await ctx.send(f"Downloading **Artist Profile** and **Playlists** not allowed.\n{ctx.author.mention}")                
             elif link.find("youtube") != -1:
                 await ctx.send(f"**YouTube Music** can't be downloaded.\n{ctx.author.mention}")
@@ -61,6 +61,8 @@ class Music(commands.Cog, name="music"):
                 await ctx.send(f"**YouTube Music** can't be downloaded.\n{ctx.author.mention}")
             # elif link.find("tidal") != -1:
             #     await ctx.send(f"**Tidal** is down for maintainence.\n{ctx.author.mention}")
+            # elif link.find("qobuz") != -1:
+            #     await ctx.send(f"**qobuz** is down for maintainence.\n{ctx.author.mention}")            
             elif link.find("soundcloud") != -1:
                 await ctx.send(f"**Soundcloud** can't be downloaded.\n{ctx.author.mention}")
             elif link.find("spotify") != -1:
@@ -72,13 +74,13 @@ class Music(commands.Cog, name="music"):
             elif not link.find("https") != -1:
             	await ctx.send(f"Add **https://** to Link.\n{ctx.author.mention}")                            
             else:
-                # await req_channel.set_permissions(ctx.guild.default_role, send_messages=False)                
+                await req_channel.set_permissions(ctx.guild.default_role, send_messages=False)                
                 await ctx.send(f"{ctx.author.mention} Please wait while your request is being downloaded.\nChannel will be unlocked after completing the request.")            
-            while True:
-                if status == True:
-                    await asyncio.sleep(3)
-                else: break
-                status = True                
+                # while True:
+                #     if status == True:
+                #         await asyncio.sleep(3)
+                #     else: break
+                # status = True                
                 download_start_time = time.time()
                 try:
                     with open('rip_log.txt', 'wb') as f:
@@ -106,20 +108,15 @@ class Music(commands.Cog, name="music"):
                     except:
                         zip_file = f"{file_name}_{time_format_file_name}.zip"                                       
 
-                    subprocess.run(["7z", "a", "-mx0", "-tzip", "-v1500m", f"{download_folder}download/Temp/{zip_file}", f'{download_folder}download/Temp/'])
+                    subprocess.run(["7z", "a", "-mx0", "-tzip", f"{download_folder}download/Temp/{zip_file}", f'{download_folder}download/Temp/'])
 
                     zipping_end_time = time.time() - zipping_start_time        
                     zipping_time = timedelta(seconds=round(zipping_end_time))
 
                     upload_start_time = time.time()
 
-                    root, dirs, files = next(os.walk(search_path), ([],[],[]))
-                    filess = ""
-                    for i in range(len(files)):
-                        filess += f"{files[i]} " 
-
                     with open('upload_log.txt', 'wb') as f:
-                        process = subprocess.Popen(["python3", "krakenupload.py", f"{filess}"], stdout=subprocess.PIPE)
+                        process = subprocess.Popen(["python3", "krakenupload.py", f"{search_path}/{zip_file}"], stdout=subprocess.PIPE)
                         for line in iter(process.stdout.readline, b''):
                             sys.stdout.buffer.write(line)
                             kf = line
@@ -152,15 +149,16 @@ class Music(commands.Cog, name="music"):
                     try:
                         await ctx.author.send(embed=all_done)
                         await ctx.send(f"It's uploaded, Slide into my dms. {ctx.author.mention}")
-                        status = False
+                        await req_channel.set_permissions(ctx.guild.default_role, send_messages=True)
+                        # status = False
                     except discord.Forbidden:
                         await ctx.send(f"Why do you have your dm's disabled ? Sorry I can't message you. {ctx.author.mention}")
-                        status = False
-                    # await req_channel.set_permissions(ctx.guild.default_role, send_messages=True)
+                        # status = False
+                        await req_channel.set_permissions(ctx.guild.default_role, send_messages=True)
                 except:
                     await ctx.send("The following Song/Album isn't available to download because of Geo Restriction or Internal Error from Streaming Platform.")
-                    status = False
-                    # await req_channel.set_permissions(ctx.guild.default_role, send_messages=True)
+                    # status = False
+                    await req_channel.set_permissions(ctx.guild.default_role, send_messages=True)
 
         else:
             await ctx.send(f"This command can only be used in <#{request_channel}>")                                         
